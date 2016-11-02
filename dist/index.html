@@ -41,11 +41,27 @@
 			left: 0;
 			right: 0;
 		}
+        .fixed-menu {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            z-index: 128;
+        }
+
+		.dummy-link, .dummy-file-input {
+			opacity: 0;
+		}
 	</style>
 </head>
 <body ng-app="kityminderDemo" ng-controller="MainController">
 <h1 class="editor-title">KityMinder Editor - Powered By FEX</h1>
 <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
+<div class="fixed-menu btn-group-vertical">
+    <button type="button" class="btn btn-default" id="btn-import">导入</button>
+    <button type="button" class="btn btn-default" id="btn-export">导出</button>
+</div>
+<a class="dummy-link"></a>
+<input type="file" class="dummy-file-input">
 </body>
 
 <!-- bower:js -->
@@ -84,7 +100,28 @@
 					window.minder = minder;
 				};
 			});
-
+    document.getElementById('btn-import').addEventListener('click', function() {
+    	let inputFile = document.querySelector('.dummy-file-input');
+		inputFile.click();
+	});
+	document.getElementById('btn-export').addEventListener('click', function() {
+		let data = new Blob([JSON.stringify(window.minder.exportJson(), null, 2)],
+				{type : 'application/json'});
+		let a = document.querySelector('.dummy-link');
+		let url = URL.createObjectURL(data);
+		a.setAttribute('href', url);
+		a.setAttribute('download', 'naotu.json');
+		a.click();
+		URL.revokeObjectURL(url);
+	});
+	document.querySelector('.dummy-file-input').addEventListener('change', function(e) {
+		let file = e.target.files[0];
+		let fileReader = new FileReader();
+		fileReader.addEventListener('load', function() {
+			window.minder.importJson(JSON.parse(fileReader.result));
+		});
+		fileReader.readAsText(file, 'utf-8');
+	});
 </script>
 
 </html>

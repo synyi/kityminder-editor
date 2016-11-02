@@ -34,11 +34,22 @@
             font-weight: normal;
             padding: 0 20px;
         }
+        .fixed-menu {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+        }
     </style>
 </head>
-<body ng-app="kityminderDemo" ng-controller="MainController">
-    <h1 class="editor-title">KityMinder Editor - Powered By FEX</h1>
-    <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
+<body>
+    <div ng-app="kityminderDemo" ng-controller="MainController">
+        <h1 class="editor-title">KityMinder Editor - Powered By FEX</h1>
+        <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
+    </div>
+    <div class="fixed-menu btn-group-vertical">
+        <button type="button" class="btn btn-default">导入</button>
+        <button type="button" class="btn btn-default">导出</button>
+    </div>
 </body>
 
 <!-- bower:js -->
